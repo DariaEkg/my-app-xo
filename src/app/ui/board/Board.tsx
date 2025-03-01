@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { getRandomMove } from "app/logic/randomStrategy";
+import { getBestMove } from "app/logic/minimaxStrategy";
 import { checkWinner, checkDraw } from "app/logic/winnerLogic";
 import { resetGameState } from 'app/logic/gameState';
 import Message from './Message';
@@ -41,26 +42,33 @@ export function Board({ board, onClick }: BoardProps) {
         setMessage(`Ход игрока ${nextPlayer}`);
     };
 
-    const computerMove = () => {
-        const { x, y } = getRandomMove(gameBoard);  // Получаем ход от бота
-        const newBoard = [...gameBoard];
-        newBoard[y][x] = 'O';  // Устанавливаем O на выбранную позицию
-        setGameBoard(newBoard); // Обновляем состояние доски с ходом бота
+    const [difficulty, setDifficulty] = useState<'easy' | 'hard'>('easy');
 
+    const computerMove = () => {
+        const move = difficulty === 'easy' ? getRandomMove(gameBoard) : getBestMove(gameBoard, 'O');
+        
+        if (!move) return; // Если нет доступных ходов
+        
+        const { x, y } = move;
+        const newBoard = [...gameBoard];
+        newBoard[y][x] = 'O';
+    
+        setGameBoard(newBoard);
+        setIsComputerTurn(false);
+        
         const winner = checkWinner(newBoard);
         if (winner) {
             setMessage(`${winner} победил!`);
-            setGameOver(true);  // Завершаем игру
+            setGameOver(true);
         } else if (checkDraw(newBoard)) {
             setMessage("Ничья!");
             setGameOver(true);
         } else {
-            // После хода бота, ходит игрок X
             setCurrentPlayer('X');
-            setIsComputerTurn(false);  // Бот закончил ход
             setMessage("Ход игрока X");
         }
     };
+    
 
     const resetBoard = () => {
         const initialState = resetGameState();
@@ -103,6 +111,13 @@ export function Board({ board, onClick }: BoardProps) {
             }}
         >
             <Message message={message} />
+            <Box sx={{ marginBottom: 2 }}>
+            <label>Выбери сложность: </label>
+            <select value={difficulty} onChange={(e) => setDifficulty(e.target.value as 'easy' | 'hard')}>
+                <option value="easy">Легко</option>
+                <option value="hard">Сложно</option>
+            </select>
+        </Box>
 
             {gameBoard.map((row, y) => (
                 <Box key={y} sx={{ display: 'flex', gap: 2 }}>

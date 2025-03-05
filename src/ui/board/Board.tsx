@@ -116,8 +116,7 @@ export function Board({ board }: { board: string[][] | null }) {
     useEffect(() => {
         if (state.isComputerTurn && !state.gameOver) {
             setTimeout(() => {
-                const move =
-                    state.difficulty === "easy"
+                const move = state.difficulty === "easy"
                         ? getRandomMove(state.board)
                         : getBestMove(state.board, "O");
 
@@ -132,7 +131,7 @@ export function Board({ board }: { board: string[][] | null }) {
         <Box
             sx={{
                 width: "300px",
-                margin: "0 8px",
+                margin: "auto",
             }}
         >
             <Message message={state.message} />
@@ -164,7 +163,7 @@ export function Board({ board }: { board: string[][] | null }) {
                                 cursor: value === "" ? "pointer" : "default",
                                 transition: "box-shadow 0.2s, transform 0.2s",
                                 "&:hover": {
-                                    background: value === "" ? "green" : "lightgray",
+                                    boxShadow: 4,
                                 },
                             }}
                             onClick={() => value === "" && handleClick(x, y)}

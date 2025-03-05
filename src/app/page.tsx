@@ -5,17 +5,7 @@ import { Board } from '@/ui/board';
 
 export default function Home() {
   return (
-    <Box sx={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh', 
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: '20px'
-    }}>
+    <Box >
       <Board 
         board={[
           ['', '', ''],

@@ -6,7 +6,15 @@ interface GameState {
     message: string;
 }
 
-export const resetGameState = () : GameState => ({
+export function resetGameState() : GameState {
+    return {
+        ...initialState,
+        board: [["", "", ""], ["", "", ""], ["", "", ""]], // Явная инициализация доски
+    };
+}
+
+
+/*=> ({
     gameBoard: [
         ['', '', ''],
         ['', '', ''],
@@ -16,4 +24,4 @@ export const resetGameState = () : GameState => ({
     isComputerTurn: false,
     gameOver: false,
     message: "Ход игрока X"
-});
+}); */

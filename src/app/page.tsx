@@ -1,13 +1,9 @@
 "use client"
 
-import { Box } from "@mui/material";
-import { Board } from 'ui/board';
+import { Game } from 'ui/game';
 
 export default function Home() {
-  return (
-    <Box>
-      <Board />
-    </Box>
-  );
+  return <Game />;
 }
   
+
